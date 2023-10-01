@@ -12,11 +12,9 @@ export default {
       movies: [],
     };
   },
-  mounted() {
-    this.getSimilar();
-  },
+ 
   methods: {
-    getSimilar() {
+     async getSimilar() {
       const options = {
         method: "GET",
         headers: {
@@ -26,7 +24,7 @@ export default {
         },
       };
 
-      fetch(
+     await fetch(
         `https://api.themoviedb.org/3/movie/${this.$route.params.id}/similar?language=en-US&page=1`,
         options
       )
@@ -39,8 +37,8 @@ export default {
     },
   },
   watch: {
-    $route() {
-      this.getSimilar()
+    async $route() {
+      await this.getSimilar()
       //location.reload();
     },
   },
