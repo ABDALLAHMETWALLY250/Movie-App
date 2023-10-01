@@ -39,7 +39,7 @@ export default {
     },
   },
   watch: {
-    $route() {
+    "$route"() {
       const options = {
         method: "GET",
         headers: {
@@ -59,7 +59,7 @@ export default {
           console.log("SimilarMovie", response.results);
         })
         .catch((err) => console.error(err));
-      location.reload();
+      //location.reload();
     },
   },
   components: {
