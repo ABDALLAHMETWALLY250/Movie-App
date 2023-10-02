@@ -19,9 +19,9 @@
           <h2 class="my-5">
             {{ movies.name }}
 
-            <span style="font-size: 13px; font-weight: 400"
-              >({{ movies.known_for_department }})</span
-            >
+            <span style="font-size: 13px; font-weight: 400">{{
+              movies.known_for_department
+            }}</span>
           </h2>
 
           <div class="font-weight-thin my-5">
@@ -152,7 +152,8 @@ export default {
   }
   .img_detail {
     width: 100%;
-    height: 100%;
+    height: 85vh;
+    object-fit: contain;
   }
 }
 @media screen and (min-width: 1024px) {
