@@ -27,7 +27,7 @@ export default {
       };
 
       fetch(
-       ` https://api.themoviedb.org/3/movie/${this.$route.params.id}/similar?language=en-US&page=1`,
+        https://api.themoviedb.org/3/movie/${this.$route.params.id}/similar?language=en-US&page=1,
         options
       )
         .then((response) => response.json())
