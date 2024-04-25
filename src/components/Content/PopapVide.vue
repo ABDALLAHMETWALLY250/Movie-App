@@ -29,9 +29,9 @@ export default {
         videos: [],
       },
     };
-  },
-  mounted() {
-    const videos = {
+  }, methods:{
+    fetchVideo(){
+      const videos = {
       method: "GET",
       headers: {
         accept: "application/json",
@@ -51,6 +51,15 @@ export default {
             "https://www.youtube.com/embed/" + response.results[0].key)
       )
       .catch((err) => console.error(err));
+    }
+  },
+    watch: {
+    $route() {
+      this.fetchVideo();
+    },
+    }
+  mounted() {
+    this.fetchVideo();
   },
 };
 </script>
