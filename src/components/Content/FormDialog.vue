@@ -43,7 +43,6 @@
                   label="Your Image as Link"
                   v-model="image"
                   required
-                  type="image"
                 ></v-text-field>
               </v-col>
             </v-row>
