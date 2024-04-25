@@ -1,7 +1,7 @@
 <template>
-  <LoadingComp />
+  <LoadingComp v-if="loding" />
 
-  <v-container style="margin-top: 5em">
+  <v-container style="margin-top: 5em" v-else>
     <h4 class="text-yellow-darken-3 text-h5">Popular Movies</h4>
   </v-container>
 
@@ -19,6 +19,7 @@ export default {
 
   data: () => ({
     movies: [],
+    loding: true,
   }),
   mounted() {
     const options = {
@@ -36,17 +37,18 @@ export default {
       .then((response) => response.json())
       .then((response) => {
         this.movies = response.results;
-        console.log(response);
+        // console.log(response);
+        this.loding = false;
       })
       .catch((err) => console.error(err));
   },
-  methods: {
-    genereTypeName(id) {
-      if (this.genres[id]) {
-        return this.genres[id].name;
-      }
-    },
-  },
+  // methods: {
+  //   genereTypeName(id) {
+  //     if (this.genres[id]) {
+  //       return this.genres[id].name;
+  //     }
+  //   },
+  // },
   components: {
     UpCamming,
     LoadingComp,

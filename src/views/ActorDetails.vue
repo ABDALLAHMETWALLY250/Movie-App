@@ -1,6 +1,6 @@
 <template>
-  <LoadingComp />
-  <div>
+  <LoadingComp v-if="loading" />
+  <div v-else>
     <v-container>
       <v-row class="flex-lg">
         <v-col cols="12" md="5" sm="12">
@@ -14,7 +14,7 @@
             class="img_detail"
           />
         </v-col>
-
+        <v-spacer />
         <v-col cols="12" md="6" sm="12" class="text-white">
           <h2 class="my-5">
             {{ movies.name }}
@@ -74,7 +74,7 @@
           </span>
 
           <div class="my-5">
-            {{ movies.biography }}
+            <p class="bio">{{ movies.biography }}</p>
           </div>
           <v-card-actions class="mt-5">
             <div>
@@ -102,6 +102,7 @@ export default {
       movies: {
         videos: [],
       },
+      loading: true,
       icons: ["mdi-facebook", "mdi-twitter", "mdi-linkedin", "mdi-instagram"],
     };
   },
@@ -122,7 +123,8 @@ export default {
       .then((response) => response.json())
       .then((response) => {
         this.movies = response;
-        console.log("actor-detail", response);
+        // console.log("actor-detail", response);
+        this.loading = false;
       })
       .catch((err) => console.error(err));
   },
@@ -166,10 +168,21 @@ export default {
   }
   .img_detail {
     width: 420px;
+    
   }
 }
 .link {
   text-decoration: none;
   color: #fff;
+}
+.bio {
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: calc(var(--line-height) * 5em);
+  line-height: var(--line-height);
+  --line-height: 1.5;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
-  <LoadingComp />
-  <div>
+  <LoadingComp v-if="loding" />
+  <div v-else>
     <v-container>
       <v-row class="flex-lg">
         <v-col cols="12" md="5" sm="6">
@@ -14,7 +14,7 @@
             class="img_detail"
           />
         </v-col>
-
+        <v-spacer />
         <v-col cols="12" md="6" sm="6" class="text-white">
           <h2 class="my-5">
             {{ movies.title }}
@@ -114,27 +114,40 @@ export default {
       movies: {
         videos: [],
       },
+      loding: true,
     };
   },
+
+  methods: {
+    fetchMovieDetail() {
+      const options = {
+        method: "GET",
+        headers: {
+          accept: "application/json",
+          Authorization:
+            "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlNjJiNWM3YWMyMDZmNGJhMWY1NjI1ZTE0MzNjZWY0MiIsInN1YiI6IjY1MDU5YTAwM2NkMTJjMDE0ZWJlOTA2YiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.SRoNKxC_8eeVrlNIY2IrHDmc6RFfYz8vR5UvBot5kUg",
+        },
+      };
+      fetch(
+        `https://api.themoviedb.org/3/movie/${this.$route.params.id}?language=en-US`,
+        options
+      )
+        .then((response) => response.json())
+        .then((response) => {
+          this.movies = response;
+          // console.log("movie-detail", response);
+          this.loding = false;
+        })
+        .catch((err) => console.error(err));
+    },
+  },
+  watch: {
+    $route() {
+      this.fetchMovieDetail();
+    },
+  },
   mounted() {
-    const options = {
-      method: "GET",
-      headers: {
-        accept: "application/json",
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlNjJiNWM3YWMyMDZmNGJhMWY1NjI1ZTE0MzNjZWY0MiIsInN1YiI6IjY1MDU5YTAwM2NkMTJjMDE0ZWJlOTA2YiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.SRoNKxC_8eeVrlNIY2IrHDmc6RFfYz8vR5UvBot5kUg",
-      },
-    };
-    fetch(
-      `https://api.themoviedb.org/3/movie/${this.$route.params.id}?language=en-US`,
-      options
-    )
-      .then((response) => response.json())
-      .then((response) => {
-        this.movies = response;
-        console.log("movie-detail", response);
-      })
-      .catch((err) => console.error(err));
+    this.fetchMovieDetail();
   },
   components: {
     ProductionCompanies,
@@ -154,6 +167,7 @@ export default {
   .img_detail {
     width: 100%;
     height: 100%;
+    border-radius: 10px;
   }
 }
 @media screen and (min-width: 768px) and (max-width: 1023px) {
@@ -167,6 +181,7 @@ export default {
   .img_detail {
     width: 100%;
     height: 100%;
+    border-radius: 10px;
   }
 }
 @media screen and (min-width: 1024px) {
@@ -179,6 +194,7 @@ export default {
   }
   .img_detail {
     width: 420px;
+    border-radius: 10px;
   }
 }
 .link {

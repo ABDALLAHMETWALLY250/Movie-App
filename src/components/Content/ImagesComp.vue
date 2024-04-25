@@ -41,28 +41,36 @@ export default {
       images: [],
     };
   },
-  mounted() {
-    const options = {
-      method: "GET",
-      headers: {
-        accept: "application/json",
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlNjJiNWM3YWMyMDZmNGJhMWY1NjI1ZTE0MzNjZWY0MiIsInN1YiI6IjY1MDU5YTAwM2NkMTJjMDE0ZWJlOTA2YiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.SRoNKxC_8eeVrlNIY2IrHDmc6RFfYz8vR5UvBot5kUg",
-      },
-    };
+  methods: {
+    fetchImage() {
+      const options = {
+        method: "GET",
+        headers: {
+          accept: "application/json",
+          Authorization:
+            "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlNjJiNWM3YWMyMDZmNGJhMWY1NjI1ZTE0MzNjZWY0MiIsInN1YiI6IjY1MDU5YTAwM2NkMTJjMDE0ZWJlOTA2YiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.SRoNKxC_8eeVrlNIY2IrHDmc6RFfYz8vR5UvBot5kUg",
+        },
+      };
 
-    fetch(
-      `https://api.themoviedb.org/3/movie/${this.$route.params.id}/images`,
-      options
-    )
-      .then((response) => response.json())
-      .then((response) => {
-        console.log("img", response.backdrops);
-        this.images = response.backdrops;
-      })
-      .catch((err) => console.error(err));
+      fetch(
+        `https://api.themoviedb.org/3/movie/${this.$route.params.id}/images`,
+        options
+      )
+        .then((response) => response.json())
+        .then((response) => {
+          // console.log("img", response.backdrops);
+          this.images = response.backdrops;
+        })
+        .catch((err) => console.error(err));
+    },
+  },
+  watch: {
+    $route() {
+      this.fetchImage();
+    },
+  },
+  mounted() {
+    this.fetchImage();
   },
 };
 </script>
-
-<style></style>

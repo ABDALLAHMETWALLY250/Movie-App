@@ -1,4 +1,5 @@
 <template>
+  
   <v-container style="margin-top: 0.5em">
     <v-row>
       <v-col v-for="movie in movies" :key="movie.id" cols="12" md="4" sm="6">

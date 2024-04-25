@@ -53,12 +53,11 @@
               <p class="text-caption mt-1">
                 {{ $store.state.email }}
               </p>
+
               <v-divider class="my-3"></v-divider>
-              <v-btn class="profile" rounded variant="text">
-                Edit Account
+              <v-btn class="profile" rounded variant="text" @click="Logout">
+                Logout
               </v-btn>
-              <v-divider class="my-3"></v-divider>
-              <v-btn class="profile" rounded variant="text"> Disconnect </v-btn>
             </div>
           </v-card-text>
         </v-card>
@@ -115,6 +114,11 @@ export default {
   components: {
     FormDialog,
   },
+  methods: {
+    Logout() {
+      localStorage.clear("userData");
+    },
+  },
 };
 </script>
 
@@ -123,13 +127,11 @@ export default {
   text-decoration: none;
 }
 .profile {
-  padding: 8px;
   border-radius: 20px;
   text-align: center;
 
   &:hover {
-    background-color: #1d79c2;
-    padding: 8px;
+    background-color: red;
     cursor: pointer;
     color: white;
   }

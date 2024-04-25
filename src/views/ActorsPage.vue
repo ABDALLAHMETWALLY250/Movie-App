@@ -1,11 +1,9 @@
 <template>
-  <LoadingComp />
+  <LoadingComp v-if="loading" />
 
-  <v-container style="margin-top: 5em">
-    <h4 class="text-yellow-darken-3 text-h5">Popular Actors</h4>
-  </v-container>
+  <v-container v-else>
+    <h4 class="text-yellow-darken-3 text-h5 ma-3">Popular Actors</h4>
 
-  <v-container>
     <v-row>
       <v-col v-for="img in images" :key="img.id" cols="12" md="4" sm="6">
         <router-link
@@ -54,6 +52,7 @@ export default {
   data() {
     return {
       images: [],
+      loading: true,
     };
   },
   mounted() {
@@ -71,6 +70,7 @@ export default {
       .then((response) => {
         console.log("actor results", response.results);
         this.images = response.results;
+        this.loading = false;
       })
       .catch((err) => console.error(err));
   },

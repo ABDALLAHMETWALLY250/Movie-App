@@ -1,7 +1,7 @@
 <template>
   <v-row style="flex: 0.8" justify="center">
     <v-dialog v-model="dialog" persistent width="1000">
-      <template v-slot:activator="{ props }">
+      <template v-if="!login" v-slot:activator="{ props }">
         <v-btn
           :class="{
             'd-none':
@@ -23,26 +23,27 @@
               <v-col cols="12" sm="6" md="4">
                 <v-text-field
                   label="Full Name"
-                  v-model="$store.state.fullName"
+                  v-model="fullName"
                   required
+                  type="text"
                 ></v-text-field>
-                {{ $store.state.fullName }}
               </v-col>
 
               <v-col cols="12" sm="6" md="4">
                 <v-text-field
                   label="Email"
-                  v-model="$store.state.email"
+                  v-model="email"
                   required
+                  type="email"
                 ></v-text-field>
-                {{ $store.state.email }}
               </v-col>
 
               <v-col cols="12" sm="6" md="4">
                 <v-text-field
-                  label=" Your Image as Link"
-                  v-model="$store.state.image"
+                  label="Your Image as Link"
+                  v-model="image"
                   required
+                  type="image"
                 ></v-text-field>
               </v-col>
             </v-row>
@@ -50,7 +51,6 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-
           <v-btn color="blue-darken-1" variant="text" @click="save">
             Save
           </v-btn>
@@ -64,17 +64,44 @@
 export default {
   data: () => ({
     dialog: false,
+    fullName: "",
+    email: "",
+    image: "",
   }),
+  computed: {
+    login() {
+      return JSON.parse(localStorage.getItem("userData")) ? true : false;
+    },
+  },
   methods: {
     save() {
-      if (
-        this.$store.state.email &&
-        this.$store.state.fullName &&
-        this.$store.state.image
-      ) {
+      if (this.email && this.fullName && this.image) {
+        // Call mutation functions to update Vuex store state
+        this.$store.commit("setFullName", this.fullName);
+        this.$store.commit("setEmail", this.email);
+        this.$store.commit("setImage", this.image);
+
+        // Close dialog
         this.dialog = false;
+      } else {
+        this.dialog = true;
       }
     },
+    ferchUserData() {
+      if (JSON.parse(localStorage.getItem("userData"))) {
+        this.fullName = JSON.parse(localStorage.getItem("userData")).fullName;
+        this.email = JSON.parse(localStorage.getItem("userData")).email;
+        this.image = JSON.parse(localStorage.getItem("userData")).image;
+        this.$store.commit("setFullName", this.fullName);
+        this.$store.commit("setEmail", this.email);
+        this.$store.commit("setImage", this.image);
+        // console.log("done");
+        // console.log(this.fullName, "wee");
+      }
+    },
+  },
+  mounted() {
+    this.ferchUserData();
   },
 };
 </script>

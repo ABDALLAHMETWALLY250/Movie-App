@@ -9,13 +9,12 @@
         <swiper
           :effect="'coverflow'"
           :grabCursor="true"
-       
           :centeredSlides="true"
           :slidesPerView="'auto'"
           :spaceBetween="0"
           :autoplay="{
             delay: 3000,
-            disableOnInteraction: false,
+            disableOnInteraction: true,
           }"
           :coverflowEffect="{
             rotate: 50,
@@ -73,26 +72,31 @@ export default {
       posters: [],
     };
   },
-  mounted() {
-    const options = {
-      method: "GET",
-      headers: {
-        accept: "application/json",
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlNjJiNWM3YWMyMDZmNGJhMWY1NjI1ZTE0MzNjZWY0MiIsInN1YiI6IjY1MDU5YTAwM2NkMTJjMDE0ZWJlOTA2YiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.SRoNKxC_8eeVrlNIY2IrHDmc6RFfYz8vR5UvBot5kUg",
-      },
-    };
+  methods: {
+    fetchImage() {
+      const options = {
+        method: "GET",
+        headers: {
+          accept: "application/json",
+          Authorization:
+            "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlNjJiNWM3YWMyMDZmNGJhMWY1NjI1ZTE0MzNjZWY0MiIsInN1YiI6IjY1MDU5YTAwM2NkMTJjMDE0ZWJlOTA2YiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.SRoNKxC_8eeVrlNIY2IrHDmc6RFfYz8vR5UvBot5kUg",
+        },
+      };
 
-    fetch(
-      "https://api.themoviedb.org/3/movie/upcoming?language=en-US&page=1",
-      options
-    )
-      .then((response) => response.json())
-      .then((response) => {
-        console.log("up", response.results);
-        this.posters = response.results;
-      })
-      .catch((err) => console.error(err));
+      fetch(
+        "https://api.themoviedb.org/3/movie/upcoming?language=en-US&page=1",
+        options
+      )
+        .then((response) => response.json())
+        .then((response) => {
+          // console.log("up", response.results);
+          this.posters = response.results;
+        })
+        .catch((err) => console.error(err));
+    },
+  },
+  mounted() {
+    this.fetchImage();
   },
   components: {
     Swiper,

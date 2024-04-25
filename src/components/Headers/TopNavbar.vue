@@ -72,12 +72,11 @@
               <p class="text-caption mt-1">
                 {{ $store.state.email }}
               </p>
+
               <v-divider class="my-3"></v-divider>
-              <v-btn class="profile" rounded variant="text">
-                Edit Account
+              <v-btn class="profile" rounded variant="text" @click="Logout">
+                Logout
               </v-btn>
-              <v-divider class="my-3"></v-divider>
-              <v-btn class="profile" rounded variant="text"> Disconnect </v-btn>
             </div>
           </v-card-text>
         </v-card>
@@ -91,9 +90,14 @@
 import FormDialog from "@/components/Content/FormDialog.vue";
 
 export default {
-  data() {},
   components: {
     FormDialog,
+  },
+  methods: {
+    Logout() {
+      localStorage.clear("userData");
+      location.reload();
+    },
   },
 };
 </script>
@@ -239,7 +243,7 @@ export default {
   text-align: center;
 
   &:hover {
-    background-color: #1d79c2;
+    background-color: red;
     cursor: pointer;
     color: white;
   }
