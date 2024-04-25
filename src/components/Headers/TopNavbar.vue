@@ -95,7 +95,7 @@ export default {
   },
   methods: {
     Logout() {
-      localStorage.clear("userData");
+      localStorage.removeItem("userData");
       location.reload();
     },
   },
