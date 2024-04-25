@@ -57,7 +57,7 @@ export default {
     $route() {
       this.fetchVideo();
     },
-    }
+    },
   mounted() {
     this.fetchVideo();
   },
