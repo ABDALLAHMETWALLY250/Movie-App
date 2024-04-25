@@ -29,18 +29,18 @@
           class="mySwiper"
         >
           <swiper-slide class="w-75" v-for="poster in posters" :key="poster.id">
-            <v-card class="mx-auto">
+            <v-card class="mx-3">
               <img
                 :src="`https://image.tmdb.org/t/p/w300/${poster.backdrop_path}`"
                 class="w-100"
                 style="object-fit: cover"
               />
-              <v-card-title class="w-100 bg-blue text-white text-center">
+              <v-card-title class="w-100 bg-blue text-white text-center pa-1">
                 <router-link
                   class="router"
                   :to="{ name: 'Movie', params: { id: poster.id } }"
                 >
-                  <p>
+                  <p class="title">
                     {{ poster.title }}
                   </p>
                 </router-link>
@@ -123,5 +123,16 @@ export default {
   justify-content: center;
   font-weight: 600;
   font-size: 20px;
+}
+img {
+  border-radius: unset !important;
+}
+@media screen and (max-width: 767px) {
+  .title {
+    font-size: 1rem;
+  }
+  .w-75 {
+    width: 100% !important;
+  }
 }
 </style>
