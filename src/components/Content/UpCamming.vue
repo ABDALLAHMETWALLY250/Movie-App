@@ -1,6 +1,6 @@
 <template>
   <v-container class="my-3">
-    <h4 class="text-yellow-darken-3 text-start text-h5">UpCaming Movies</h4>
+    <h4 class="text-yellow-darken-3 text-start text-h5">Coming Movies</h4>
   </v-container>
 
   <v-container class="my-3">
@@ -26,22 +26,23 @@
           :pagination="false"
           :loop="true"
           :modules="modules"
+          :navigation="true"
           class="mySwiper"
         >
-          <swiper-slide class="w-75" v-for="poster in posters" :key="poster.id">
+          <swiper-slide class="w-75" v-for="slide in posters" :key="slide">
             <v-card class="mx-3">
               <img
-                :src="`https://image.tmdb.org/t/p/w300/${poster.backdrop_path}`"
+                :src="`https://image.tmdb.org/t/p/w300/${slide.backdrop_path}`"
                 class="w-100"
                 style="object-fit: cover"
               />
               <v-card-title class="w-100 bg-blue text-white text-center pa-1">
                 <router-link
                   class="router"
-                  :to="{ name: 'Movie', params: { id: poster.id } }"
+                  :to="{ name: 'Movie', params: { id: slide.id } }"
                 >
                   <p class="title">
-                    {{ poster.title }}
+                    {{ slide.title }}
                   </p>
                 </router-link>
               </v-card-title>
@@ -61,11 +62,18 @@ import { Swiper, SwiperSlide } from "swiper/vue";
 import "swiper/css";
 
 import "swiper/css/effect-coverflow";
+import "swiper/css/navigation";
 import "swiper/css/pagination";
 
 import "swiper/css";
 // import required modules
-import { EffectCoverflow, Pagination, Autoplay } from "swiper/modules";
+import {
+  EffectCoverflow,
+  Pagination,
+  Autoplay,
+  Navigation,
+} from "swiper/modules";
+
 export default {
   data() {
     return {
@@ -104,7 +112,7 @@ export default {
   },
   setup() {
     return {
-      modules: [EffectCoverflow, Pagination, Autoplay],
+      modules: [EffectCoverflow, Pagination, Autoplay, Navigation],
     };
   },
 };
