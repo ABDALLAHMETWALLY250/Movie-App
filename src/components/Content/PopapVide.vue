@@ -1,26 +1,20 @@
 <template>
-  <v-dialog v-model="isActive" height="950" width="950">
-    <template v-slot:activator="{ on }">
-      <v-btn variant="outlined" v-on="on">
-        <v-icon mdi-play-circle-outline></v-icon> play trailer</v-btn>
+  <v-dialog height="950" width="950">
+    <template v-slot:activator="{ props }">
+      <v-btn variant="outlined" v-bind="props">
+        <v-icon>mdi-play-circle-outline</v-icon> play trailer</v-btn
+      >
     </template>
 
-    <template v-slot:default>
+    <template v-slot:default="{ isActive }">
       <v-card height="950" title="Trailer">
-        <template v-if="!loading && videos.length === 0">
-          <v-alert variant="warning">No trailers found for this movie.</v-alert>
-        </template>
-        <template v-else-if="loading">
-          <v-progress-circular indeterminate></v-progress-circular>
-        </template>
-        <template v-else>
-          <iframe v-for="trailer in videos" :key="trailer.id" :src="`https://www.youtube.com/embed/${trailer.key}`" title="description" width="100%" height="900"></iframe>
-        </template>
+        <iframe height="950" :src="movies.videos" title="description"></iframe>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="red" variant="outlined" @click="isActive = false">
-            <v-icon mdi-close></v-icon> Close
-          </v-btn>
+
+          <v-btn color="red" variant="outlined" @click="isActive.value = false"
+            ><v-icon>mdi-close</v-icon> Close</v-btn
+          >
         </v-card-actions>
       </v-card>
     </template>
@@ -34,32 +28,38 @@ export default {
       movies: {
         videos: [],
       },
-      isActive: false,
-      loading: false,
     };
+  }, methods:{
+    fetchVideo(){
+      const videos = {
+      method: "GET",
+      headers: {
+        accept: "application/json",
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlNjJiNWM3YWMyMDZmNGJhMWY1NjI1ZTE0MzNjZWY0MiIsInN1YiI6IjY1MDU5YTAwM2NkMTJjMDE0ZWJlOTA2YiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.SRoNKxC_8eeVrlNIY2IrHDmc6RFfYz8vR5UvBot5kUg",
+      },
+    };
+
+    fetch(
+      `https://api.themoviedb.org/3/movie/${this.$route.params.id}/videos?language=en-US`,
+      videos
+    )
+      .then((response) => response.json())
+      .then(
+        (response) =>
+          (this.movies.videos =
+            "https://www.youtube.com/embed/" + response.results[0].key)
+      )
+      .catch((err) => console.error(err));
+    }
   },
-  methods: {
-    async fetchVideo() {
-      this.loading = true;
-      try {
-        const apiKey = process.env.TMDB_API_KEY; // Replace with your API key retrieval method
-        const response = await fetch(
-          `https://api.themoviedb.org/3/movie/${this.$route.params.id}/videos?api_key=${apiKey}&language=en-US`
-        );
-        const data = await response.json();
-        this.videos = data.results;
-      } catch (err) {
-        console.error(err);
-      } finally {
-        this.loading = false;
-      }
+    watch: {
+    $route() {
+      this.fetchVideo();
     },
-  },
-  watch: {
-    '$route': {
-      handler: 'fetchVideo',
-      immediate: true,
     },
+  mounted() {
+    this.fetchVideo();
   },
 };
 </script>
